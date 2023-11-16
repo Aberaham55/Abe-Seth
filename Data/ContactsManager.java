@@ -67,9 +67,14 @@ public class ContactsManager {
 
     public void displayContacts() {
         for (Contact contact : contacts) {
+            System.out.println("NAME: | NUMBER");
+            System.out.printf("-------------------------------------%n");
             System.out.println(contact);
+            System.out.println();
+
         }
     }
+
 
 
 
