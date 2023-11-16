@@ -24,6 +24,7 @@ public class Main {
                     5. Exit.
                    Enter an option (1, 2, 3, 4 or 5):
                     """);
+
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
 

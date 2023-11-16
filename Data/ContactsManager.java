@@ -51,10 +51,10 @@ public class ContactsManager {
 
     public Contact searchContact(String name) {
         for (Contact contact : contacts) {
-            System.out.println(contact.getName());
-            System.out.println(name);
-            System.out.println(contact.getName().equals(name));
-            if (contact.getName().equalsIgnoreCase(name)) {
+//            System.out.println(contact.getName());
+//            System.out.println(name);
+//            System.out.println(contact.getName().equals(name));
+            if (contact.getName().trim().equalsIgnoreCase(name.trim())) {
                 return contact;
             }
         }
@@ -62,7 +62,7 @@ public class ContactsManager {
     }
 
     public void deleteContact(String name) {
-        contacts.removeIf(contact -> contact.getName().equalsIgnoreCase(name));
+        contacts.removeIf(contact -> contact.getName().trim().equalsIgnoreCase(name.trim()));
     }
 
     public void displayContacts() {
