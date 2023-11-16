@@ -1,11 +1,16 @@
 package Data;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class ContactsManager {
     private List<Contact> contacts;
     private File contactsFile;
+
+    Path pathToContacts = Paths.get("contacts.txt");
 
     public ContactsManager(String filePath) {
         contacts = new ArrayList<>();
@@ -14,11 +19,15 @@ public class ContactsManager {
     }
 
     public void loadContacts() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(contactsFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" | ");
-                contacts.add(new Contact(parts[0], parts[1]));
+
+        try  {
+            List<String> contactsFromFile = Files.readAllLines(pathToContacts);
+            Iterator<String> contactsIterator = contactsFromFile.iterator();
+            while (contactsIterator.hasNext()) {
+                String nextLine = contactsIterator.next();
+                String[] parts = nextLine.split("\\|");
+                Contact contact = new Contact(parts[0], parts[1]);
+                contacts.add(contact);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,5 +67,35 @@ public class ContactsManager {
             System.out.println(contact);
         }
     }
+
+
+
+
+        public List<String> readFile(Path pathToContacts){
+            List<String> linesInFile = new ArrayList<>();
+            try {
+                linesInFile = Files.readAllLines(pathToContacts);
+            } catch (IOException iox){
+                iox.printStackTrace();
+            }
+            return linesInFile;
+        }
+
+        public void outputList(List<String> list) {
+        for(String listItem : list) {
+            System.out.println(listItem);
+        }
+    }
+
+    public void writeListToFile(Path pathToFile, List<String> listToWrite) {
+        try{
+            Files.write(pathToFile, listToWrite);
+        } catch (IOException iox) {
+            iox.printStackTrace();
+            System.out.println(iox.getMessage());
+        }
+    }
+
+
 }
 
