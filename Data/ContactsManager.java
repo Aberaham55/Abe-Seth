@@ -51,6 +51,9 @@ public class ContactsManager {
 
     public Contact searchContact(String name) {
         for (Contact contact : contacts) {
+            System.out.println(contact.getName());
+            System.out.println(name);
+            System.out.println(contact.getName().equals(name));
             if (contact.getName().equalsIgnoreCase(name)) {
                 return contact;
             }
