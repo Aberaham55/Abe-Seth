@@ -67,10 +67,10 @@ public class ContactsManager {
     }
 
     public void displayContacts() {
-        System.out.println("Name       | Phone number |");
-        System.out.println("---------------------------");
+        System.out.println("Name       | Phone number   |");
+        System.out.println("-----------------------------");
         for (Contact contact : contacts) {
-            System.out.println(String.format("%-10s | %-12s |", contact.getName(), contact.getPhoneNumber()));
+            System.out.println(String.format("%-10s | %-13s |", contact.getName(), contact.getPhoneNumber()));
         }
     }
 
@@ -84,7 +84,17 @@ public class ContactsManager {
     }
 
     public String formatPhoneNumber(String phoneNumber) {
-        return phoneNumber.replaceAll("(\\d{3})(\\d{3})(\\d+)", "(\\$1) \\$2-\\$3");
+        String digitsOnly = phoneNumber.replaceAll("\\D", "");
+
+        if (digitsOnly.length() == 10) {
+            return String.format("(%s) %s-%s",
+                    digitsOnly.substring(0, 3),
+                    digitsOnly.substring(3, 6),
+                    digitsOnly.substring(6));
+        } else {
+            return phoneNumber;
+        }
+
     }
 
 }

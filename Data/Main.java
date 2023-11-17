@@ -1,12 +1,5 @@
 package Data;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -61,25 +54,6 @@ public class Main {
             }
         }
     }
-
-    public void contactInfo() {
-        Path pathToContacts = Paths.get("contacts.txt");
-        System.out.println(pathToContacts);
-
-        try {
-            if (Files.notExists(pathToContacts)) {
-                Files.createFile(pathToContacts);
-            }
-        } catch (IOException iox) {
-            iox.printStackTrace();
-        }
-
-        List<String> moreContacts = Arrays.asList("John | 699696996969");
-        try {
-            Files.write(pathToContacts, moreContacts, StandardOpenOption.APPEND);
-        } catch (IOException iox) {
-            System.out.println("Error writing to file " + iox.getMessage());
-        }
-    }
 }
+
 
