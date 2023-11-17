@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ContactsManager {
-    private List<Contact> contacts;
-    private File contactsFile;
+    private final List<Contact> contacts;
+    private final File contactsFile;
 
     Path pathToContacts = Paths.get("contacts.txt");
 
@@ -22,10 +22,8 @@ public class ContactsManager {
 
         try  {
             List<String> contactsFromFile = Files.readAllLines(pathToContacts);
-            Iterator<String> contactsIterator = contactsFromFile.iterator();
-            while (contactsIterator.hasNext()) {
-                String nextLine = contactsIterator.next();
-                String[] parts = nextLine.split("\\|");
+            for (String nextLine : contactsFromFile) {
+                String[] parts = nextLine.split("\\|", 2);
                 Contact contact = new Contact(parts[0], parts[1]);
                 contacts.add(contact);
             }
@@ -46,14 +44,17 @@ public class ContactsManager {
     }
 
     public void addContact(String name, String phoneNumber) {
-        contacts.add(new Contact(name, phoneNumber));
+        if (contactExists(name)) {
+            System.out.println("A contact with this name already exists.");
+            return;
+        }
+        String formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+        contacts.add(new Contact(name, formattedPhoneNumber));
     }
+
 
     public Contact searchContact(String name) {
         for (Contact contact : contacts) {
-//            System.out.println(contact.getName());
-//            System.out.println(name);
-//            System.out.println(contact.getName().equals(name));
             if (contact.getName().trim().equalsIgnoreCase(name.trim())) {
                 return contact;
             }
@@ -66,44 +67,35 @@ public class ContactsManager {
     }
 
     public void displayContacts() {
+        System.out.println("Name       | Phone number   |");
+        System.out.println("-----------------------------");
         for (Contact contact : contacts) {
-            System.out.println("NAME: | NUMBER");
-            System.out.printf("-------------------------------------%n");
-            System.out.println(contact);
-            System.out.println();
-
+            System.out.println(String.format("%-10s | %-13s |", contact.getName(), contact.getPhoneNumber()));
         }
     }
 
-
-
-
-
-        public List<String> readFile(Path pathToContacts){
-            List<String> linesInFile = new ArrayList<>();
-            try {
-                linesInFile = Files.readAllLines(pathToContacts);
-            } catch (IOException iox){
-                iox.printStackTrace();
+    public boolean contactExists(String name) {
+        for (Contact contact : contacts) {
+            if (contact.getName().trim().equalsIgnoreCase(name.trim())) {
+                return true;
             }
-            return linesInFile;
         }
-
-        public void outputList(List<String> list) {
-        for(String listItem : list) {
-            System.out.println(listItem);
-        }
+        return false;
     }
 
-    public void writeListToFile(Path pathToFile, List<String> listToWrite) {
-        try{
-            Files.write(pathToFile, listToWrite);
-        } catch (IOException iox) {
-            iox.printStackTrace();
-            System.out.println(iox.getMessage());
-        }
-    }
+    public String formatPhoneNumber(String phoneNumber) {
+        String digitsOnly = phoneNumber.replaceAll("\\D", "");
 
+        if (digitsOnly.length() == 10) {
+            return String.format("(%s) %s-%s",
+                    digitsOnly.substring(0, 3),
+                    digitsOnly.substring(3, 6),
+                    digitsOnly.substring(6));
+        } else {
+            return phoneNumber;
+        }
+
+    }
 
 }
 
