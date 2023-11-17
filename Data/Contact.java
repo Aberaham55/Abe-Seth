@@ -1,8 +1,8 @@
 package Data;
 
 public class Contact {
-    private String name;
-    private String phoneNumber;
+    private final String name;
+    private final String phoneNumber;
 
     public Contact(String name, String phoneNumber) {
         this.name = name;
